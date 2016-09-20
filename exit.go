@@ -12,18 +12,18 @@ func Fail(msg interface{}) {
 
 // Failf prints according to Printf rules to stderr and exits with 1.
 func Failf(pattern string, args ...interface{}) {
-	FailWithf(1, pattern, args...)
+	ExitWithf(1, pattern, args...)
 }
 
-// Fail prints the %v form of the provided value to stderr and exits
+// ExitWith prints the %v form of the provided value to stderr and exits
 // with provided status code.
-func FailWith(code int, msg interface{}) {
-	FailWithf(code, "%v", msg)
+func ExitWith(code int, msg interface{}) {
+	ExitWithf(code, "%v", msg)
 }
 
-// Failf prints according to Printf rules to stderr and exits with
+// ExitWithf prints according to Printf rules to stderr and exits with
 // provided status code.
-func FailWithf(code int, pattern string, args ...interface{}) {
+func ExitWithf(code int, pattern string, args ...interface{}) {
 	fmt.Fprintf(os.Stderr, pattern, args...)
 	os.Exit(code)
 }
