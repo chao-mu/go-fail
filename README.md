@@ -5,3 +5,5 @@ if err := run(); err != nil {
   fail.Failf("Discord detected: %v", err)
 }
 ```
+
+Documentation: https://godoc.org/github.com/chao-mu/go-fail
