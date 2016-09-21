@@ -22,3 +22,8 @@ func ExampleWith() {
 func ExampleWithf() {
 	fail.Withf(os.Stdout, 23, "Almost there: %s", "Cool")
 }
+
+func ExampleCheck() {
+	err := errors.New("uh oh...")
+	fail.Check(err, "ummm: %v")
+}
