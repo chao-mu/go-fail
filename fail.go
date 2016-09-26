@@ -15,6 +15,19 @@ const (
 	ErrorCode = 1
 )
 
+/*
+type Fail struct {
+	Code int
+	Out  io.Writer
+}
+
+// Exitf writes msg to stderr (according to fail.Pattern),
+// then exits with .
+func (f Fail) Exit(msg interface{}) {
+	f.Exitf(Pattern, msg)
+}
+*/
+
 // format applys Pattern to msg via sprintf.
 func format(msg interface{}) string {
 	return fmt.Sprintf(Pattern, msg)
@@ -46,19 +59,30 @@ func Withf(w io.Writer, code int, pattern string, args ...interface{}) {
 }
 
 // Check checks if the error passed is non-nil, and if it is
-// delegates to Failf with the provided printf format and err
-// as its first arg.
-func Check(err error, pattern string) {
-	if err != nil {
-		Failf(pattern, err)
+// delegates to Failf, with the error and provided prefix
+// in the form "%s: %v" (or falls through to Fail if no prefix).
+func Check(err error, prefix string) {
+	if err == nil {
+		return
+	}
+
+	if prefix == "" {
+		Fail(err)
+	} else {
+		Failf("%s: %v", prefix, err)
 	}
 }
 
-// CheckWith checks if the error passed is non-nil, and
-// if it is delegates to Withf with the provided printf format
-// and err as its first arg.
-func CheckWith(err error, w io.Writer, code int, pattern string) {
-	if err != nil {
-		Withf(w, code, pattern, err)
+// CheckWith is like Check, except that the writer and exit
+// code can be specified.
+func CheckWith(err error, prefix string, w io.Writer, code int) {
+	if err == nil {
+		return
+	}
+
+	if prefix == "" {
+		Withf(w, code, "%s: %v", prefix, err)
+	} else {
+		With(w, code, err)
 	}
 }
