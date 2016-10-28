@@ -32,5 +32,5 @@ fatal.CheckOr(err, logrus.WithField("path", path).Fatal, "Failed to open file")
 ## log
 ``` go
 file, err := os.Open(path)
-fatal.CheckOrf(err, log.Fatal, "Failed to open '%s', path, fatal.ErrorHere)
+fatal.CheckOrf(err, log.Fatal, "Failed to open '%s': %v", path, fatal.ErrorHere)
 ```
